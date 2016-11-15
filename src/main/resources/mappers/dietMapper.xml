@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.helper.mapper.DietMapper">
+    
+<!--     <resultMap type="org.zerock.domain.MemberVO" id="Member">
+		<result property="posNum" column="POS_NUM"/>
+		<result property="regNum" column="REG_NUM"/>
+		<result property="vanNum" column="VAN_NUM"/>
+		<result property="repreName" column="REPRE_NAME"/>
+		<result property="compaName" column="COMPA_NAME"/>
+		<result property="phoneNum" column="PHONE_NUM"/>
+	</resultMap> -->
+
+    <insert id="create">
+        insert into diet(emailAddress, menu, calorie, eatTime)
+        values(#{emailAddress},#{menu},#{calorie},#{eatTime})
+    </insert>
+    
+    <select id="read" resultType="com.helper.domain.DietVO">
+        select emailAddress, menu, calorie, eatTime
+        from
+        diet
+        Where emailAddress=#{emailAddress}
+    </select>
+    
+    <update id="update">
+        update diet set emailAddress=#{emailAddress}, menu=#{menu}, calorie=#{calorie}, eatTime=#{eatTime}
+        where emailAddress = #{emailAddress} 
+    </update>
+    
+    <delete id="delete">
+        delete from diet where emailAddress=#{emailAddress}
+    </delete>
+    
+    <select id="listAll" resultType ="com.helper.domain.DietVO">
+        <![CDATA[
+        select emailAddress, menu, calorie, eatTime
+        from
+        diet
+        where emailAddress> 0
+        order by emailAddress desc
+         ]]>
+    </select>
+    
+</mapper>

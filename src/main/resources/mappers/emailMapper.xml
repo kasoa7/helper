@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.helper.mapper.EmailMapper">
+    
+<!--     <resultMap type="org.zerock.domain.MemberVO" id="Member">
+		<result property="posNum" column="POS_NUM"/>
+		<result property="regNum" column="REG_NUM"/>
+		<result property="vanNum" column="VAN_NUM"/>
+		<result property="repreName" column="REPRE_NAME"/>
+		<result property="compaName" column="COMPA_NAME"/>
+		<result property="phoneNum" column="PHONE_NUM"/>
+	</resultMap> -->
+
+    <insert id="create">
+        insert into email(emailAddress)
+        values(#{emailAddress})
+    </insert>
+    
+    <select id="read" resultType="com.helper.domain.EmailVO">
+        select emailAddress
+        from
+        email
+        Where emailAddress=#{emailAddress}
+    </select>
+    
+    <update id="update">
+        update email set emailAddress=#{emailAddress}
+        where emailAddress = #{emailAddress} 
+    </update>
+    
+    <delete id="delete">
+        delete from email where emailAddress=#{emailAddress}
+    </delete>
+    
+    <select id="listAll" resultType ="com.helper.domain.EmailVO">
+        <![CDATA[
+        select emailAddress
+        from
+        email
+        where emailAddress> 0
+        order by emailAddress desc
+         ]]>
+    </select>
+    
+</mapper>
