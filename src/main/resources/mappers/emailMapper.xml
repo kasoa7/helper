@@ -15,15 +15,27 @@
 	</resultMap> -->
 
     <insert id="create">
-        insert into email(emailAddress)
-        values(#{emailAddress})
+        insert into email(emailAddress,age)
+        values(#{emailAddress},#{age})
     </insert>
+
+    <update id="updateAge">
+        update email set age=#{age}
+        where emailAddress = #{emailAddress} 
+    </update>
     
     <select id="read" resultType="com.helper.domain.EmailVO">
         select emailAddress
-        from
-        email
+        from email
         Where emailAddress=#{emailAddress}
+    </select>
+
+	<!-- 인자로 넘어온 String(이메일) 을 비교해서 있으면 가져오는 쿼리 -->
+    <select id="getEmailByString" parameterType="String" resultType="String">
+        SELECT emailAddress
+        FROM
+        email
+        WHERE emailAddress=#{emailAddress}
     </select>
     
     <update id="update">

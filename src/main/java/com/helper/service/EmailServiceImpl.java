@@ -9,19 +9,23 @@ import com.helper.domain.EmailVO;
 import com.helper.persistence.EmailDAO;
 
 @Service
-public class EmailServiceImpl implements EmailService{
-	
+public class EmailServiceImpl implements EmailService {
+
 	@Inject
 	private EmailDAO dao;
 
 	@Override
-	public void regist(EmailVO diet) throws Exception {
-		dao.create(diet);
+	public void regist(EmailVO vo) throws Exception {
+		dao.create(vo);
 	}
 
 	@Override
-	public EmailVO read(String emailAddress) throws Exception{
-		//System.out.println(test.toString());
+	public void updateAge(EmailVO vo) throws Exception {
+		dao.updateAge(vo);
+	}
+
+	@Override
+	public EmailVO read(String emailAddress) throws Exception {
 		return dao.read(emailAddress);
 	}
 
@@ -39,5 +43,9 @@ public class EmailServiceImpl implements EmailService{
 	public List<EmailVO> listAll() throws Exception {
 		return dao.listAll();
 	}
-	
+
+	@Override
+	public String getEmailByString(String emailAddress) throws Exception {
+		return dao.readByString(emailAddress);
+	}
 }

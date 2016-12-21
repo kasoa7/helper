@@ -5,13 +5,17 @@ import java.util.List;
 import com.helper.domain.EmailVO;
 
 public interface EmailService {
-	public void regist(EmailVO diet)throws Exception;
-	
-	public EmailVO read(String emailAddress)throws Exception;
-	
-	public void modify(EmailVO diet)throws Exception;
-	
-	public void remove(String emailAddress)throws Exception;
-	
-	public List<EmailVO> listAll()throws Exception;
+	public void regist(EmailVO diet) throws Exception;
+
+	public void updateAge(EmailVO vo) throws Exception;
+
+	public EmailVO read(String emailAddress) throws Exception;
+
+	public void modify(EmailVO diet) throws Exception;
+
+	public void remove(String emailAddress) throws Exception;
+
+	public List<EmailVO> listAll() throws Exception;
+
+	public String getEmailByString(String emailAddress) throws Exception;
 }

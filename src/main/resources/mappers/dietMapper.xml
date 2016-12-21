@@ -15,34 +15,85 @@
 	</resultMap> -->
 
     <insert id="create">
-        insert into diet(emailAddress, menu, calorie, eatTime)
-        values(#{emailAddress},#{menu},#{calorie},#{eatTime})
+        insert into diet(emailAddress, Bmenu, Bkcal, Bmealtime, Lmenu, Lkcal, Lmealtime, Dmenu, Dkcal, Dmealtime, MealDays)
+        values(#{emailAddress}, #{Bmenu}, #{Bkcal}, #{Bmealtime},#{Lmenu}, #{Lkcal}, #{Lmealtime},#{Dmenu}, #{Dkcal},#{Dmealtime},#{MealDays})
+        on duplicate key update emailAddress=#{emailAddress}, Bmenu=#{Bmenu}, Bkcal=#{Bkcal}, Bmealtime=#{Bmealtime},
+        Lmenu=#{Lmenu}, Lkcal=#{Lkcal}, Lmealtime=#{Lmealtime}, Dmenu=#{Dmenu}, Dkcal=#{Dkcal},Dmealtime=#{Dmealtime},
+        MealDays=#{MealDays}
     </insert>
     
-    <select id="read" resultType="com.helper.domain.DietVO">
-        select emailAddress, menu, calorie, eatTime
+    <resultMap type="com.helper.domain.DietVO" id="sumkcal">
+    	<result property="Totalkcal" column="Bkcal+Lkcal+Dkcal"/>
+    </resultMap>
+    <select id="read" resultType="com.helper.domain.DietVO" resultMap="sumkcal">
+        select emailAddress, Bmenu, Bkcal, Bmealtime, Lmenu, Lkcal, Lmealtime, Dmenu, Dkcal, Dmealtime, MealDays, Bkcal+Lkcal+Dkcal
         from
         diet
+        Where emailAddress=#{emailAddress} and MealDays=#{Mealdays}
+    </select>
+    
+	<select id="listAll" resultType ="com.helper.domain.DietVO" resultMap="sumkcal">
+        <![CDATA[
+         select emailAddress, Bmenu, Bkcal, Bmealtime, Lmenu, Lkcal, Lmealtime, Dmenu, Dkcal, Dmealtime, MealDays, Bkcal+Lkcal+Dkcal
+        from diet
         Where emailAddress=#{emailAddress}
+        order by emailAddress desc
+         ]]>
     </select>
     
     <update id="update">
         update diet set emailAddress=#{emailAddress}, menu=#{menu}, calorie=#{calorie}, eatTime=#{eatTime}
         where emailAddress = #{emailAddress} 
     </update>
-    
     <delete id="delete">
-        delete from diet where emailAddress=#{emailAddress}
-    </delete>
-    
-    <select id="listAll" resultType ="com.helper.domain.DietVO">
-        <![CDATA[
-        select emailAddress, menu, calorie, eatTime
+        delete from diet where emailAddress=#{emailAddress} and MealDays=#{Mealdays}
+    </delete>   
+	
+	<resultMap type="com.helper.domain.BreakfastVO" id="breakfastdiet">
+		<result property="title" column="Bmenu"/>
+		<result property="title2" column="Bkcal"/>
+		<result property="start" column="MealDays"/>
+	</resultMap>
+	<resultMap type="com.helper.domain.LaunchVO" id="launchdiet">
+		<result property="title" column="Lmenu"/>
+		<result property="title2" column="Lkcal"/>
+		<result property="start" column="MealDays"/>
+	</resultMap>
+	<resultMap type="com.helper.domain.DinnerVO" id="dinnerdiet">
+		<result property="title" column="Dmenu"/>
+		<result property="title2" column="Dkcal"/>
+		<result property="start" column="MealDays"/>
+	</resultMap>
+	<resultMap type="com.helper.domain.TotalkcalVO" id="totalkcal">	  
+	    <result property="title" column="Bkcal+Lkcal+Dkcal"/>
+	    <result property="start" column="MealDays"/>
+	</resultMap>
+	
+    <select id="breakfast" resultType ="com.helper.domain.BreakfastVO" resultMap="breakfastdiet">
+        select Bmenu, Bkcal, MealDays
         from
         diet
-        where emailAddress> 0
-        order by emailAddress desc
-         ]]>
+        Where emailAddress=#{emailAddress} and Bmenu != ""
     </select>
     
+    <select id="launch" resultType ="com.helper.domain.LaunchVO" resultMap="launchdiet">
+        select Lmenu, Lkcal, MealDays
+        from
+        diet
+        Where emailAddress=#{emailAddress} and Lmenu != ""
+    </select>
+    
+    <select id="dinner" resultType ="com.helper.domain.DinnerVO" resultMap="dinnerdiet">
+        select Dmenu, Dkcal, MealDays
+        from
+        diet
+        Where emailAddress=#{emailAddress} and Dmenu != ""
+    </select>
+    
+    <select id="totalkcal" resultType="com.helper.domain.TotalkcalVO" resultMap="totalkcal">
+        select Bkcal+Lkcal+Dkcal, MealDays
+        from
+        diet
+        where emailAddress=#{emailAddress}        
+    </select>
 </mapper>
